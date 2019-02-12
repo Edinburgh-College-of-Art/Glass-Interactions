@@ -14,7 +14,7 @@
 
 void setup() 
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   analogReference(EXTERNAL);
 }
 
@@ -22,5 +22,5 @@ void loop()
 {
   int sensorValue = analogRead(A0); 
   Serial.println(sensorValue);
-  delay(1000);
+  delayMicroseconds(500);
 }
