@@ -1,3 +1,20 @@
+void setuoMusicShield()
+{
+  Serial.println("Adafruit VS1053 Simple Test");
+  if (! musicPlayer.begin())
+  {
+    Serial.println(F("Couldn't find VS1053, do you have the right pins defined?"));
+    while (1);
+  }
+  Serial.println(F("VS1053 found"));
+
+  if (!SD.begin(CARDCS)) {
+    Serial.println(F("SD failed, or not present"));
+    while (1);  // don't do anything more
+  }
+  printDirectory(SD.open("/"), 0); // list files 
+}
+
 void printDirectory(File dir, int numTabs)/// File listing helper
 {
   while (true)
@@ -35,7 +52,7 @@ void readSerialInput()
   {
     char c = Serial.read();
 
-    switch ()
+    switch (c)
     {
       case 's':
         musicPlayer.stopPlaying();
