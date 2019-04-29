@@ -34,13 +34,13 @@ const int echo = 5;
 Ultrasonic ultrasonic(trig, echo);
 int threshold = 30;
 //==========================================================================================
-int pixelNumber  = 60;
-int pixelDataPin =  9;
+int pixelNumber  = 20;
+int pixelDataPin =  10;
 int delayBetweenColourChanges = 100;
 //==========================================================================================
 uint16_t pixelType = NEO_GRB + NEO_KHZ800; // type should always be this for your NeoPixels
-uint8_t brightness = 255;
-uint8_t fadeStepSize = 10;
+uint16_t brightness = 255;
+uint8_t fadeStepSize = 1;
 bool lightsAreOn = false;
 Adafruit_NeoPixel pixelRing = Adafruit_NeoPixel(pixelNumber, pixelDataPin, pixelType);
 //==========================================================================================

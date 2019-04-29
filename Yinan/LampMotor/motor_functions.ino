@@ -6,7 +6,7 @@ void extend()
 
 void retract()
 {
-  myStepper.step(-totalSteps );
+  myStepper.step(-totalSteps);
   extended = false;
 }
 
@@ -17,7 +17,6 @@ void setupMotor()
   digitalWrite(3, HIGH);
   digitalWrite(11, HIGH);
   myStepper.setSpeed(160);
-//  currentPosition = EEPROM.read(0) * 10; // Read current position
 }
 
 void setupUltrasound()

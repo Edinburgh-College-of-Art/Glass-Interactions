@@ -29,12 +29,16 @@ uint32_t colourWheel(byte WheelPos)
 void fadeUp()
 {
   brightness += fadeStepSize;
+
+  Serial.println(brightness);
+
   if (brightness >= 255)
   {
     brightness = 255;
     lightsAreOn = true;
+    Serial.println("lights On");
   }
-  uint32_t b = Adafruit_NeoPixel::Color(brightness, brightness, brightness);
+  uint32_t b = Adafruit_NeoPixel::Color(brightness * 0.1, brightness * 0.7, brightness * 1);
   pixelRing.fill(b, 0, pixelRing.numPixels());
   pixelRing.show();
 
@@ -52,6 +56,7 @@ void fadeDown()
   {
     brightness = 0;
     lightsAreOn = false;
+    Serial.println("lights Off");
   }
 
   uint32_t b = Adafruit_NeoPixel::Color(brightness, brightness, brightness);
@@ -66,6 +71,7 @@ void turnDownLights()
   while (lightsAreOn)
   {
     fadeDown();
+    delay(10);
   }
 }
 void turnDownLights(unsigned long currentTime)
@@ -85,6 +91,7 @@ void turnUpLights()
   while (!lightsAreOn)
   {
     fadeUp();
+    delay(10);
   }
 }
 void turnUpLights(unsigned long currentTime)
