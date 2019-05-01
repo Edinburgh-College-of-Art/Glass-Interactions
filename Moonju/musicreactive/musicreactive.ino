@@ -1,19 +1,25 @@
+//--------------------------------------------------------------------------------
+/* 
+ *   Arduino Music Visualizer 0.2
+ *   This music visualizer works off of analog input from a 3.5mm headphone jack
+ *   Just touch jumper wire from A0 to tip of 3.5mm headphone jack
+ *   The code is dynamic and can handle variable amounts of LEDs
+ *   as long as you adjust NUM_LEDS according to the amount of LEDs you are using
+ *   
+ */
+//--------------------------------------------------------------------------------
 #include <FastLED.h>
 //--------------------------------------------------------------------------------
-// Arduino Music Visualizer 0.2
-// This music visualizer works off of analog input from a 3.5mm headphone jack
-// Just touch jumper wire from A0 to tip of 3.5mm headphone jack
-// The code is dynamic and can handle variable amounts of LEDs
-// as long as you adjust NUM_LEDS according to the amount of LEDs you are using
-//--------------------------------------------------------------------------------
 // LED LIGHTING SETUP
-#define LED_PIN     5
-#define NUM_LEDS    144
 #define BRIGHTNESS  64
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
 #define UPDATES_PER_SECOND 100
 //--------------------------------------------------------------------------------
+const int LED_PIN     = 5;
+const int numStrips   = 8;
+const int pixPerStrip = 18;
+const int NUM_LEDS    = pixPerStrip * numStrips;
 CRGB leds[NUM_LEDS];
 //--------------------------------------------------------------------------------
 int audio = A0;
@@ -44,7 +50,7 @@ void loop()
 
   if (audio_input > 0)
   {
-    pre_react = ((long)NUM_LEDS * (long)audio_input) / 1023L; // TRANSLATE AUDIO LEVEL TO NUMBER OF LEDs
+    pre_react = ((long)pixPerStrip * (long)audio_input) / 1023L; // TRANSLATE AUDIO LEVEL TO NUMBER OF LEDs
 
     if (pre_react > react) // ONLY ADJUST LEVEL OF LED IF LEVEL HIGHER THAN CURRENT LEVEL
       react = pre_react;
@@ -56,16 +62,5 @@ void loop()
 
   rainbow(); // APPLY COLOR
 
-  k = k - wheel_speed; // SPEED OF COLOR WHEEL
-  if (k < 0) // RESET COLOR WHEEL
-    k = 255;
-
-  // REMOVE LEDs
-  decay_check++;
-  if (decay_check > decay)
-  {
-    decay_check = 0;
-    if (react > 0)
-      react--;
-  }  
+  updateColorWheel();
 }

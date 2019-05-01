@@ -1,3 +1,4 @@
+//--------------------------------------------------------------------------------
 void pixelSetup()
 {
   delay( 3000 ); // power-up safety delay
@@ -9,7 +10,7 @@ void pixelSetup()
     leds[i] = CRGB( 51, 0, 0);
   FastLED.show();
 }
-
+//--------------------------------------------------------------------------------
 CRGB Scroll(int pos)
 {
   CRGB color (0, 0, 0);
@@ -30,17 +31,32 @@ CRGB Scroll(int pos)
   }
   return color;
 }
+//--------------------------------------------------------------------------------
+void updateColorWheel()
+{
+  k = k - wheel_speed; // SPEED OF COLOR WHEEL
+  if (k < 0) // RESET COLOR WHEEL
+    k = 255;
 
-
-// FUNCTION TO GET AND SET COLOR
-// THE ORIGINAL FUNCTION WENT BACKWARDS
-// THE MODIFIED FUNCTION SENDS WAVES OUT FROM FIRST LED
-// https://github.com/NeverPlayLegit/Rainbow-Fader-FastLED/blob/master/rainbow.ino
+  // REMOVE LEDs
+  decay_check++;
+  if (decay_check > decay)
+  {
+    decay_check = 0;
+    if (react > 0)
+      react--;
+  }
+}
+//--------------------------------------------------------------------------------
 void rainbow()
 {
-  for (int i = NUM_LEDS - 1; i >= 0; i--) 
+  for (int j = 0; j < numStrips; ++j)
   {
-    leds[i] = (i < react) ? Scroll((i * 256 / 50 + k) % 256) : CRGB(0, 0, 0);
+    for (int i = 0; i < pixPerStrip; ++i)
+    {
+      int p = ((j % 2) == 0) ? (i + (j * pixPerStrip)) : ((j * pixPerStrip) + (pixPerStrip - 1) - i);
+      leds[p] = (i < react) ? Scroll((i * 256 / 50 + k) % 256) : CRGB(0, 0, 0);
+    }
   }
   FastLED.show();
 }
